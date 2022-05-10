@@ -14,7 +14,9 @@ const Box = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-
+  border: 5px solid #F6F6F6;
+  border-radius: 20px;
+  padding: 20px;
 `;
 
 const Login = () => {
