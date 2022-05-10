@@ -30,7 +30,8 @@ const Login = () => {
   }
 
   return (
-    <Container style={{display: "flex", justifyContent: "center", marginTop: 200}}>
+    <Container style={{justifyContent: "center", marginTop: 200, marginLeft: 500}}>
+      <h2>로그인</h2>
       <Form style={{borderWidth: 10, width: 500}}>
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>ID</Form.Label>
