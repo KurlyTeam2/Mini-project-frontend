@@ -1,6 +1,21 @@
-import {Button, Container, Form} from "react-bootstrap";
+import {Button, Form} from "react-bootstrap";
 import {Link, useNavigate} from "react-router-dom";
-import {ChangeEvent, useCallback, useState} from "react";
+import { ChangeEvent, useCallback, useState } from "react";
+import styled from "styled-components";
+const Container = styled.div`
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const Box = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+`;
 
 const Login = () => {
   const [id, setId] = useState("");
@@ -30,7 +45,8 @@ const Login = () => {
   }
 
   return (
-    <Container style={{justifyContent: "center", marginTop: 200, marginLeft: 500}}>
+    <Container style={{}}>
+      <Box>
       <h2>로그인</h2>
       <Form style={{borderWidth: 10, width: 500}}>
         <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -48,6 +64,8 @@ const Login = () => {
           <Button style={{width: 120}}>회원가입</Button>
         </Link>
       </Form>
+      </Box>
+     
     </Container>
   )
 }

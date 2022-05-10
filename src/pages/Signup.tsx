@@ -1,6 +1,23 @@
-import {Button, Container, Form} from "react-bootstrap";
+import {Button, Form} from "react-bootstrap";
 import {useNavigate} from "react-router-dom";
-import {ChangeEvent, useCallback, useState} from "react";
+import { ChangeEvent, useCallback, useState } from "react";
+import styled from "styled-components";
+
+const Container = styled.div`
+  background-image: "../image/login.jpg";
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const Box = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+`;
 
 const Signup = () => {
   const [id, setId] = useState("");
@@ -29,8 +46,9 @@ const Signup = () => {
   }
 
   return (
-      <Container style={{justifyContent: "center", marginTop: 200, marginLeft: 500}}>
-        <h2>회원가입</h2>
+    <Container>
+      <Box>
+      <h2>회원가입</h2>
         <Form style={{borderWidth: 10, width: 500}}>
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>ID</Form.Label>
@@ -49,6 +67,7 @@ const Signup = () => {
 
           <Button style={{width: 120}} onClick={() => handleSignupButtonClick()}>회원가입</Button>
         </Form>
+      </Box>
       </Container>
   )
 }
