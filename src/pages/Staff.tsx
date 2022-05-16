@@ -1,9 +1,9 @@
 import {Button} from "react-bootstrap";
-import { ChangeEvent, useCallback, useState } from "react";
 import styled from "styled-components";
+import {useLocation} from "react-router-dom";
 
 class User{
-  name: string;
+  name: string | undefined;
   auth: string;
   day = 0;
   week = 0;
@@ -81,10 +81,13 @@ const Calendar = styled.div`
 const staff = new User("컬리2", "Staff", 6, 10, 40);
 
 const Staff = () => {
+  const location = useLocation();
+  const state = location.state as {name: string};
+
   return (
     <Container>
       <Header>
-        <h1 style={{marginRight:20, marginLeft: 50}}>{staff.name}</h1>
+        <h1 style={{marginRight:20, marginLeft: 50}}>{state.name}</h1>
         <h4>({staff.auth})</h4>
       </Header>
       <Layout>

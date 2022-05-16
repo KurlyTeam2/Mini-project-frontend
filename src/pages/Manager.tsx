@@ -1,6 +1,5 @@
-import {Button} from "react-bootstrap";
-import { ChangeEvent, useCallback, useState } from "react";
 import styled from "styled-components";
+import {useLocation} from "react-router-dom";
 
 class User {
   name: string;
@@ -103,10 +102,13 @@ const me = new User("컬리2", "Manager");
 const staff = new Staff("신민규", "Staff", 6, 10, 40);
 
 const Manager = () => {
+  const location = useLocation();
+  const state = location.state as {name: string};
+
   return (
     <Container>
       <Header>
-        <h1 style={{marginRight:20, marginLeft: 50}}>{me.name}</h1>
+        <h1 style={{marginRight:20, marginLeft: 50}}>{state.name}</h1>
         <h4>({me.auth})</h4>
       </Header>
       <Layout>
