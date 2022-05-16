@@ -42,9 +42,9 @@ const Login = () => {
         exist = true;
         if (password === response.data[i].password) {
           if (response.data[i].admin)
-            navigate("/manager/" + response.data[i].userId, {state: {name: response.data[i]}.name});
+            navigate("/manager/" + response.data[i].userId, {state: {id: response.data[i].id, name: response.data[i].name, password: response.data[i].password}});
           else
-            navigate("/staff/" + response.data[i].userId, {state: {name: response.data[i].name}});
+            navigate("/staff/" + response.data[i].userId, {state: {id: response.data[i].id, name: response.data[i].name, password: response.data[i].password}});
         }
         else {
           alert("잘못된 PASSWORD 입니다.");
