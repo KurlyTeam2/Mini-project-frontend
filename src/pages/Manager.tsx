@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import {useLocation} from "react-router-dom";
+import MyPageDropdown from "../components/MyPageDropdown";
 
 class User {
   name: string;
@@ -103,13 +104,14 @@ const staff = new Staff("신민규", "Staff", 6, 10, 40);
 
 const Manager = () => {
   const location = useLocation();
-  const state = location.state as {name: string};
+  const state = location.state as {id: number, name: string, password: string};
 
   return (
     <Container>
       <Header>
         <h1 style={{marginRight:20, marginLeft: 50}}>{state.name}</h1>
         <h4>({me.auth})</h4>
+        <MyPageDropdown state={state}/>
       </Header>
       <Layout>
         <Menu>
