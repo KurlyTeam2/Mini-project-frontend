@@ -2,6 +2,7 @@ import {Button, Form} from "react-bootstrap";
 import {Link, useNavigate} from "react-router-dom";
 import { ChangeEvent, useCallback, useState } from "react";
 import styled from "styled-components";
+import {getUsers} from "../api/userApi";
 const Container = styled.div`
   width: 100vw;
   height: 100vh;
@@ -33,16 +34,27 @@ const Login = () => {
     setPassword(event.target.value)
   }, [])
 
-  const handleLoginButtonClick = () => {
-    //TODO: 백엔드 연동 후 로직 변경
-    if (id === "manager" && password === "1234") {
-      navigate("/manager")
+  const handleLoginButtonClick = async () => {
+    let exist = false;
+    const response = await getUsers();
+    for (let i = 0; i < response.data.length; i++) {
+      if (id === response.data[i].userId) {
+        exist = true;
+        if (password === response.data[i].password) {
+          if (response.data[i].admin)
+            navigate("/manager/" + response.data[i].userId, {state: {id: response.data[i].id, name: response.data[i].name, password: response.data[i].password}});
+          else
+            navigate("/staff/" + response.data[i].userId, {state: {id: response.data[i].id, name: response.data[i].name, password: response.data[i].password}});
+        }
+        else {
+          alert("잘못된 PASSWORD 입니다.");
+        }
+        break;
+      }
     }
-    else if (id === "staff" && password === "1234") {
-      navigate("/staff")
-    }
-    else {
-      alert("유효하지 않은 ID 또는 PASSWORD 입니다")
+
+    if (!exist) {
+      alert("존재하지 않는 ID 입니다.");
     }
   }
 

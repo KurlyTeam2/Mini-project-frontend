@@ -2,9 +2,10 @@ import {Button, Form} from "react-bootstrap";
 import {useNavigate} from "react-router-dom";
 import { ChangeEvent, useCallback, useState } from "react";
 import styled from "styled-components";
+import {getUsers, postUser} from "../api/userApi";
 
 const Container = styled.div`
-  background-image: "../image/login.jpg";
+  //background-image: "../image/login.jpg";
   width: 100vw;
   height: 100vh;
   display: flex;
@@ -24,6 +25,7 @@ const Box = styled.div`
 const Signup = () => {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
   const [isManager, setIsManager] = useState(true);
   const [isStaff, setIsStaff] = useState(false);
 
@@ -37,14 +39,32 @@ const Signup = () => {
     setPassword(event.target.value)
   }, [])
 
+  const handleNameChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
+    setName(event.target.value)
+  }, [])
+
   const handleCheckboxClick = () => {
     setIsManager(!isManager)
     setIsStaff(!isStaff)
   }
 
-  const handleSignupButtonClick = () => {
-    alert("회원가입에 성공하였습니다.")
-    navigate("/login")
+  const handleSignupButtonClick = async () => {
+    let success = true;
+    const response = await getUsers();
+    for (let i = 0; i < response.data.length; i++) {
+      if (id === response.data[i].userId) {
+        alert("사용중인 아이디입니다.")
+        success = false;
+        break;
+      }
+    }
+
+    if (success) {
+      const response = await postUser(id, password, name, isManager);
+      console.log(response)
+      alert("회원가입에 성공하였습니다.")
+      navigate("/login")
+    }
   }
 
   return (
@@ -60,6 +80,11 @@ const Signup = () => {
           <Form.Group className="mb-3" controlId="formBasicPassword">
             <Form.Label>Password</Form.Label>
             <Form.Control type="password" placeholder="비밀번호를 입력하세요" value={password} onChange={handlePasswordChange}/>
+          </Form.Group>
+
+          <Form.Group className="mb-3" controlId="formBasicName">
+            <Form.Label>이름</Form.Label>
+            <Form.Control type="name" placeholder="이름을 입력하세요" value={name} onChange={handleNameChange}/>
           </Form.Group>
 
           <div style={{display: "flex", marginBottom: 10}}>

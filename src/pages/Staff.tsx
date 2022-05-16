@@ -1,9 +1,13 @@
-import {Button} from "react-bootstrap";
-import { ChangeEvent, useCallback, useState } from "react";
+import {Button, Dropdown, DropdownButton, Form, Modal} from "react-bootstrap";
 import styled from "styled-components";
+import {Link, useLocation, useNavigate} from "react-router-dom";
+import {useState} from "react";
+import ChangePasswordModal from "../components/ChangePasswordModal";
+import WithdrawalModal from "../components/WithdrawalModal";
+import MyPageDropdown from "../components/MyPageDropdown";
 
 class User{
-  name: string;
+  name: string | undefined;
   auth: string;
   day = 0;
   week = 0;
@@ -81,11 +85,15 @@ const Calendar = styled.div`
 const staff = new User("컬리2", "Staff", 6, 10, 40);
 
 const Staff = () => {
+  const location = useLocation();
+  const state = location.state as {id: number, name: string, password: string};
+
   return (
     <Container>
       <Header>
-        <h1 style={{marginRight:20, marginLeft: 50}}>{staff.name}</h1>
+        <h1 style={{marginRight:20, marginLeft: 50}}>{state.name}</h1>
         <h4>({staff.auth})</h4>
+        <MyPageDropdown state={state}/>
       </Header>
       <Layout>
         <Content>
