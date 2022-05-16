@@ -13,7 +13,7 @@ export const postUser = async (id: string, password: string, name: string, isMan
 }
 
 export const putUser = async (id: number, currentPassword: string, newPassword: string) => {
-  const response = await axios.put(url + "api/users/" + id, {"currentPassword": currentPassword, "newPassword": newPassword});
+  const response = await axios.put(url + "/api/users/" + id, {"currentPassword": currentPassword, "newPassword": newPassword});
   return response.data;
 }
 
