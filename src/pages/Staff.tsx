@@ -69,7 +69,8 @@ const Staff = () => {
   const [TotalTime, setTotalTime] = useState("");
 
   const d = new Date();
-  const date = d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDay()
+  const date = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDay()
+  
   const today = () => {
     var d = new Date();
     var year = d.getFullYear();
