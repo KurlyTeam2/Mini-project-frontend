@@ -8,21 +8,6 @@ import MyPageDropdown from "../components/MyPageDropdown";
 import { getWorks, postWorks } from "../api/workApi";
 import { time } from "console";
 
-class User{
-  name: string | undefined;
-  auth: string;
-  day = 0;
-  week = 0;
-  month = 0;
-
-  constructor(name: string, auth: string, day:number, week:number, month:number) {
-    this.name = name;
-    this.auth = auth;
-    this.day = day;
-    this.week = week;
-    this.month = month;
-  }
-}
 
 const Container = styled.div`
   width: 100vw;
@@ -75,16 +60,6 @@ const Text1 = styled.div`
   margin-bottom: 30px;
 `;
 
-const Calendar = styled.div`
-  width: 50vw;
-  height: 20%;
-  margin-bottom: 50px;
-  font-size: 30px;
-  border: 2px solid;
-  text-align: center;
-`;
-
-const staff = new User("컬리2", "Staff", 6, 10, 40);
 
 const Staff = () => {
   const location = useLocation();
