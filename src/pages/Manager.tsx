@@ -2,6 +2,7 @@ import styled from "styled-components";
 import {useLocation} from "react-router-dom";
 import MyPageDropdown from "../components/MyPageDropdown";
 import { getUsers } from "../api/userApi";
+import { getWorks } from "../api/workApi";
 import { useEffect, useState } from "react";
 
 
@@ -117,6 +118,9 @@ const Manager = () => {
   const date = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDay()
 
   const [Users, setUsers] = useState<any[]>([])
+  const [Total, setTotal] = useState("");
+  const [End, setEnd] = useState("");
+  const [Start, setStart] = useState("");
 
   useEffect(() => {
     const input = async () => {
@@ -125,22 +129,26 @@ const Manager = () => {
       for (const user of res.data){
         if (user.admin === false) {
           array.push(user);
-          console.log(user);
         }
       }
+      console.log(array);
       setUsers(array);
     }
     input();
   }, [])
   
-  const handleNameBtn = () => {
-    
+  const handleNameBtn = async(id:number) => {
+    const res = await getWorks(id);
+    console.log(res.data[res.data.length-1].workingTime);
+    setStart(res.data[res.data.length-1].workingTime);
+    setEnd(res.data[res.data.length-1].quittingTime);
+    setTotal(res.data[res.data.length-1].totalTime);
   }
   return (
     <Container>
       <Header>
         <h1 style={{marginRight:20, marginLeft: 50}}>{state.name}</h1>
-        <h4 style={{marginRight:"20%"}}>(Manager)</h4>
+        <h4>(Manager)</h4>
         <MyPageDropdown state={state}/>
       </Header>
       <Layout>
@@ -149,7 +157,7 @@ const Manager = () => {
           <List>
             {
               Users.map(user => (
-                <NameBtn key={user.id}>{user.name}</NameBtn>
+                <NameBtn key={user.id} onClick={()=>handleNameBtn(user.id)}>{user.name}</NameBtn>
               ))
               }
           </List>
@@ -158,14 +166,14 @@ const Manager = () => {
           <ContentBox>
           <h4 style={{ marginLeft: 5 }}>{date}</h4>
           <HourBox>
-            <Text1>출근 시간 10:00</Text1>
-            <Text1>퇴근 시간 10:00</Text1>
+            <Text1>출근 시간 {Start.slice(-8,-3)}</Text1>
+            <Text1>퇴근 시간 {End.slice(-8,-3)}</Text1>
           </HourBox>
           <h2 style={{marginTop:20}}>상태: 퇴근</h2>
           <h1 style={{marginTop:50}}>출근 통계</h1>
           
           <HourBox>
-            <Text1>총: {staff.day}시간</Text1>
+            <Text1>총: {Total.slice(0,5)}시간</Text1>
           </HourBox>
           </ContentBox>
         </Content>
