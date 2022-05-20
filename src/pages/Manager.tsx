@@ -1,15 +1,14 @@
 import styled from "styled-components";
 import {useLocation} from "react-router-dom";
 import MyPageDropdown from "../components/MyPageDropdown";
+import { getUsers } from "../api/userApi";
+import { useEffect, useState } from "react";
 
-class User {
-  name: string;
-  auth: string;
 
-  constructor(name: string, auth: string) {
-    this.name = name;
-    this.auth = auth;
-  }
+type User = {
+  admin: Boolean,
+  id: number,
+  name: string,
 }
 
 class Staff{
@@ -63,20 +62,31 @@ const Menu = styled.div`
 const List = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   margin-top: 20px;
+  width: 100%;
 `;
 
-const Name = styled.text`
+const NameBtn = styled.button`
   font-size: 30px;
-  margin-top: 10px;
+  width: 100%;
+  border: 0px;
+  border-top: 1px solid black;
+  background-color: white;
+  padding: 10px 0px;
 `;
 
 const Content = styled.div`
   display: flex;
   flex-direction: column;
-  width: 70%;
+  align-items: center;
+  justify-content: center;
+  width: 85%;
   padding: 30px 40px;
+`;
+
+const ContentBox = styled.div`
+  display: flex;
+  flex-direction: column;
 `;
 
 const HourBox = styled.div`
@@ -98,34 +108,55 @@ const Calendar = styled.div`
   text-align: center;
 `;
 
-const me = new User("컬리2", "Manager");
-
 const staff = new Staff("신민규", "Staff", 6, 10, 40);
 
 const Manager = () => {
   const location = useLocation();
   const state = location.state as {id: number, name: string, password: string};
+  const d = new Date();
+  const date = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDay()
 
+  const [Users, setUsers] = useState<any[]>([])
+
+  useEffect(() => {
+    const input = async () => {
+      const res = await getUsers();
+      const array = [];
+      for (const user of res.data){
+        if (user.admin === false) {
+          array.push(user);
+          console.log(user);
+        }
+      }
+      setUsers(array);
+    }
+    input();
+  }, [])
+  
+  const handleNameBtn = () => {
+    
+  }
   return (
     <Container>
       <Header>
         <h1 style={{marginRight:20, marginLeft: 50}}>{state.name}</h1>
-        <h4>({me.auth})</h4>
+        <h4 style={{marginRight:"20%"}}>(Manager)</h4>
         <MyPageDropdown state={state}/>
       </Header>
       <Layout>
         <Menu>
           <h2 style={{marginTop:20}}>직원 목록</h2>
           <List>
-            <Name>{staff.name}</Name>
-            <Name>??</Name>
-            <Name>??</Name>
-            <Name>??</Name>
+            {
+              Users.map(user => (
+                <NameBtn key={user.id}>{user.name}</NameBtn>
+              ))
+              }
           </List>
         </Menu>
         <Content>
-          <Calendar>일주일 달력</Calendar>
-          <h4 style={{ marginLeft: 5 }}>5/10(화)</h4>
+          <ContentBox>
+          <h4 style={{ marginLeft: 5 }}>{date}</h4>
           <HourBox>
             <Text1>출근 시간 10:00</Text1>
             <Text1>퇴근 시간 10:00</Text1>
@@ -134,10 +165,9 @@ const Manager = () => {
           <h1 style={{marginTop:50}}>출근 통계</h1>
           
           <HourBox>
-            <Text1>일: {staff.day}시간</Text1>
-            <Text1>주: {staff.week}시간</Text1>
-            <Text1>월: {staff.month}시간</Text1>
+            <Text1>총: {staff.day}시간</Text1>
           </HourBox>
+          </ContentBox>
         </Content>
       </Layout>
     </Container>
